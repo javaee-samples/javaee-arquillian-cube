@@ -1,0 +1,4 @@
+# Java EE Simple Sample with Arquillian Cube
+
+Package the application as: `mvn package`
+Deploy the application to locally running WildFly: `mvn install`
