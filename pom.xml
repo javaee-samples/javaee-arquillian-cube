@@ -8,6 +8,8 @@
     <name>javaee-arquillian-cube</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <org.jboss.arquillian.cube.version>1.0.0.Alpha5</org.jboss.arquillian.cube.version>
+        <org.wildfly>8.2.0.Final</org.wildfly>
     </properties>
     <dependencies>
         <dependency>
@@ -49,4 +51,56 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>cube</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.arquillian.cube</groupId>
+                    <artifactId>arquillian-cube-docker</artifactId>
+                    <version>${org.jboss.arquillian.cube.version}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-arquillian-container-remote</artifactId>
+                    <version>${org.wildfly}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <testResources>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                        <filtering>true</filtering>
+                    </testResource>
+                </testResources>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.18.1</version>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <arquillian.launch>wildfly-docker</arquillian.launch>
+                                <arq.container.wildfly-docker.configuration.username>admin</arq.container.wildfly-docker.configuration.username>
+                                <arq.container.wildfly-docker.configuration.password>Admin#70365</arq.container.wildfly-docker.configuration.password>
+                                <arq.extension.docker.serverVersion>1.15</arq.extension.docker.serverVersion>
+                                <arq.extension.docker.serverUri>http://127.0.0.1:2375</arq.extension.docker.serverUri>
+                                <arq.extension.docker.dockerContainers>
+                                    wildfly-docker:
+                                    image: arungupta/javaee7-samples-wildfly
+                                    exposedPorts: [8080/tcp, 9990/tcp]
+                                    await:
+                                    strategy: polling
+                                    sleepPollingTime: 50000
+                                    iterations: 5
+                                    portBindings: [8080/tcp, 9990/tcp]
+                                </arq.extension.docker.dockerContainers>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
