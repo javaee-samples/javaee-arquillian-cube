@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://jboss.org/schema/arquillian"
+    xsi:schemaLocation="http://jboss.org/schema/arquillian
+    http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <container qualifier="wildfly" default="true">
+        <configuration>
+            <property name="target">wildfly:8.1.0.Final:remote</property>
+            <property name="managementPort">9991</property>
+            <property name="username">admin</property>
+            <property name="password">Admin#70365</property>
+        </configuration>
+    </container>
+
+    <extension qualifier="docker">
+        <property name="serverVersion">1.15</property>
+        <property name="dockerContainers">
+            wildfly:
+              buildImage:
+                dockerfileLocation: src/test/resources/wildfly
+                noCache: true
+                remove: true
+              exposedPorts: [8080/tcp, 9990/tcp]
+              await:
+                strategy: polling
+              portBindings: [8081->8080/tcp, 9991->9990/tcp]
+        </property>
+    </extension>
+
+</arquillian>
