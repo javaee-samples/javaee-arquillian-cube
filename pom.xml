@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.javaee7.sample</groupId>
     <artifactId>javaee-arquillian-cube</artifactId>
@@ -8,15 +9,32 @@
     <name>javaee-arquillian-cube</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <org.jboss.arquillian.cube.version>1.0.0.Alpha5</org.jboss.arquillian.cube.version>
+        <org.arquillian.cube.version>1.0.0.Alpha5</org.arquillian.cube.version>
         <org.wildfly>8.2.0.Final</org.wildfly>
+        <org.jboss.arquillian.version>1.1.8.Final</org.jboss.arquillian.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${org.jboss.arquillian.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
         </dependency>
     </dependencies>
     <build>
@@ -56,10 +74,15 @@
             <id>cube</id>
             <dependencies>
                 <dependency>
+                    <groupId>org.jboss.arquillian.junit</groupId>
+                    <artifactId>arquillian-junit-container</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
                     <groupId>org.arquillian.cube</groupId>
                     <artifactId>arquillian-cube-docker</artifactId>
-                    <version>${org.jboss.arquillian.cube.version}</version>
                     <scope>test</scope>
+                    <version>${org.arquillian.cube.version}</version>
                 </dependency>
                 <dependency>
                     <groupId>org.wildfly</groupId>
@@ -69,34 +92,13 @@
                 </dependency>
             </dependencies>
             <build>
-                <testResources>
-                    <testResource>
-                        <directory>src/test/resources</directory>
-                        <filtering>true</filtering>
-                    </testResource>
-                </testResources>
                 <plugins>
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.18.1</version>
                         <configuration>
-                            <systemPropertyVariables>
-                                <arquillian.launch>wildfly-docker</arquillian.launch>
-                                <arq.container.wildfly-docker.configuration.username>admin</arq.container.wildfly-docker.configuration.username>
-                                <arq.container.wildfly-docker.configuration.password>Admin#70365</arq.container.wildfly-docker.configuration.password>
-                                <arq.extension.docker.serverVersion>1.15</arq.extension.docker.serverVersion>
-                                <arq.extension.docker.serverUri>http://127.0.0.1:2375</arq.extension.docker.serverUri>
-                                <arq.extension.docker.dockerContainers>
-                                    wildfly-docker:
-                                    image: arungupta/javaee7-samples-wildfly
-                                    exposedPorts: [8080/tcp, 9990/tcp]
-                                    await:
-                                    strategy: polling
-                                    sleepPollingTime: 50000
-                                    iterations: 5
-                                    portBindings: [8080/tcp, 9990/tcp]
-                                </arq.extension.docker.dockerContainers>
-                            </systemPropertyVariables>
+                            <excludes>
+                                <exclude>**/persistence/**</exclude>
+                            </excludes>
                         </configuration>
                     </plugin>
                 </plugins>
