@@ -24,11 +24,11 @@ public class PersonDatabaseTest {
     }
 
     @Inject
-    PersonDatabase personDatabaes;
+    PersonDatabase personDatabase;
 
     @Test
     public void shouldGetPennyFromPersonDatabase() {
-        assertThat(personDatabaes, notNullValue());
-        assertThat(personDatabaes.getPerson(0).getName(), is("Penny"));
+        assertThat(personDatabase, notNullValue());
+        assertThat(personDatabase.getPerson(0).getName(), is("Penny"));
     }
 }
