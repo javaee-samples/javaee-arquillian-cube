@@ -9,7 +9,7 @@
     <name>javaee-arquillian-cube</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <org.arquillian.cube.version>1.0.0.Alpha5</org.arquillian.cube.version>
+        <org.arquillian.cube.version>1.0.0.Alpha7</org.arquillian.cube.version>
         <org.wildfly>8.2.0.Final</org.wildfly>
         <org.jboss.arquillian.version>1.1.8.Final</org.jboss.arquillian.version>
     </properties>

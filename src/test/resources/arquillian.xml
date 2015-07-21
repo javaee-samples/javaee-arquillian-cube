@@ -15,18 +15,9 @@
 
     <extension qualifier="docker">
         <property name="serverVersion">1.15</property>
-        <property name="serverUri">https://192.168.99.103:2376</property>
-        <property name="dockerContainers">
-            wildfly:
-              buildImage:
-                dockerfileLocation: src/test/resources/wildfly
-                noCache: true
-                remove: true
-              exposedPorts: [8080/tcp, 9990/tcp]
-              await:
-                strategy: polling
-              portBindings: [8081->8080/tcp, 9991->9990/tcp]
-        </property>
+        <property name="definitionFormat">COMPOSE</property>
+        <property name="machineName">dev</property>
+        <property name="dockerContainersFile">docker-compose.yml</property>
     </extension>
 
 </arquillian>
