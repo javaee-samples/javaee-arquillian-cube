@@ -16,8 +16,9 @@
     <extension qualifier="docker">
         <property name="serverVersion">1.15</property>
         <property name="definitionFormat">COMPOSE</property>
-        <property name="machineName">dev</property>
+        <property name="machineName">default</property>
         <property name="dockerContainersFile">docker-compose.yml</property>
+        <property name="serverUri">https://dockerHost:2376</property>
     </extension>
 
 </arquillian>
